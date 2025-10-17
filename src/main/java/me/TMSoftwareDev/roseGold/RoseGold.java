@@ -26,7 +26,7 @@ public final class RoseGold extends JavaPlugin implements Listener {
         if (name.equals("TalllTim")) {
             event.setJoinMessage("Hello Divine King of True Glory and Noble Status Tim");
         } else if (name.equals("airhopman")) {
-            event.setJoinMessage("Hello Cheater ");
+            event.setJoinMessage("Hello Cheater");
         }
     }
 }
