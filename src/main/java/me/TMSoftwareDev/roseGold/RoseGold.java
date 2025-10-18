@@ -1,6 +1,10 @@
 package me.TMSoftwareDev.roseGold;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RoseGold extends JavaPlugin implements Listener {
@@ -9,7 +13,19 @@ public final class RoseGold extends JavaPlugin implements Listener {
     public void onEnable() {
         System.out.println("@ RoseGold Enabled");
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
+
+        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, "RoseGoldSword"), Items.getRoseGoldSword());
+        recipe.shape(
+                "GGG",
+                "GCG",
+                "GGG"
+        );
+        recipe.setIngredient('G', Material.GOLD_INGOT);
+        recipe.setIngredient('C', Material.COPPER_INGOT);
+
+        Bukkit.addRecipe(recipe);
         getCommand("Reset").setExecutor(new Commands());
+
     }
 
     @Override
