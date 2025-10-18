@@ -8,9 +8,12 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RoseGold extends JavaPlugin implements Listener {
+    private static RoseGold instance;
 
     @Override
     public void onEnable() {
+        instance = this;
+
         System.out.println("@ RoseGold Enabled");
         getServer().getPluginManager().registerEvents(new EntityListener(), this);
 
@@ -24,6 +27,7 @@ public final class RoseGold extends JavaPlugin implements Listener {
         recipe.setIngredient('C', Material.COPPER_INGOT);
 
         Bukkit.addRecipe(recipe);
+        RecipeManager.registerRecipes();
         getCommand("Reset").setExecutor(new Commands());
 
     }
@@ -31,6 +35,10 @@ public final class RoseGold extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         System.out.println("@ RoseGold Disabled");
+    }
+
+    public static RoseGold getInstance() {
+        return instance;
     }
 
 
