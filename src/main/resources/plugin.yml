@@ -2,3 +2,7 @@ name: RoseGold
 version: '1.0-SNAPSHOT'
 main: me.TMSoftwareDev.roseGold.RoseGold
 api-version: '1.21'
+commands:
+  Reset:
+    description: An Easy Way To Kill Yourself
+    usage: /<command>
