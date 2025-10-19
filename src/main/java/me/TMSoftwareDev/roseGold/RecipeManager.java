@@ -33,7 +33,33 @@ public class RecipeManager {
         ThunderChestplate.setIngredient('D', Material.DIAMOND_CHESTPLATE);
         ThunderChestplate.setIngredient('I', Material.IRON_INGOT);
 
+        ShapedRecipe BlazeStick = new ShapedRecipe(new NamespacedKey(RoseGold.getInstance(), "Blaze_Stick"), Items.getBlazeStick());
+        BlazeStick.shape
+                (
+                        "BBB",
+                        "BSB",
+                        "BBB"
+                );
+        BlazeStick.setIngredient('B', Material.BLAZE_POWDER);
+        BlazeStick.setIngredient('S', Material.STICK);
+
+        ShapedRecipe Gauntletsofrage = new ShapedRecipe(new NamespacedKey(RoseGold.getInstance(), "Gauntletsofrage"), Items.getGauntletsOfRage());
+        Gauntletsofrage.shape
+                (
+                        "RNR",
+                        "GWG",
+                        "INI"
+                );
+        Gauntletsofrage.setIngredient('R', Material.REDSTONE_BLOCK);
+        Gauntletsofrage.setIngredient('W', Material.WITHER_SKELETON_SKULL);
+        Gauntletsofrage.setIngredient('N', Material.NETHER_WART);
+        Gauntletsofrage.setIngredient('I', Material.IRON_INGOT);
+        Gauntletsofrage.setIngredient('G', Material.GOLD_INGOT);
+
+
         Bukkit.addRecipe(AmethystBoots);
         Bukkit.addRecipe(ThunderChestplate);
+        Bukkit.addRecipe(BlazeStick);
+        Bukkit.addRecipe(Gauntletsofrage);
     }
 }

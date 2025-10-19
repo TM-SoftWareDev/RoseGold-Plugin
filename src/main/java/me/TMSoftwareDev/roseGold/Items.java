@@ -43,6 +43,17 @@ public class Items {
         return ThunderChestPlate;
     }
 
+    public static ItemStack getBlazeStick() {
+        ItemStack BlazeStick = new ItemStack(Material.STICK, 1);
+        ItemMeta Meta = BlazeStick.getItemMeta();
+        Meta.setDisplayName(ChatColor.YELLOW + "Blaze Stick");
+        Meta.setLore(List.of("Right Click :)"));
+        Meta.setMaxStackSize(1);
+        Meta.setRarity(ItemRarity.EPIC);
+        BlazeStick.setItemMeta(Meta);
+        return BlazeStick;
+    }
+
 
     public static ItemStack getAmethystBoots() {
         ItemStack AmethystBoots = new ItemStack(Material.DIAMOND_BOOTS, 1);
@@ -63,6 +74,23 @@ public class Items {
         Meta.addAttributeModifier(Attribute.FALL_DAMAGE_MULTIPLIER, Fall_Damage);
         AmethystBoots.setItemMeta(Meta);
         return AmethystBoots;
+    }
+
+    public static ItemStack getGauntletsOfRage() {
+        ItemStack GauntletsOfRage = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
+        ItemMeta Meta = GauntletsOfRage.getItemMeta();
+        Meta.setDisplayName(ChatColor.RED + "Gauntlets Of Rage");
+        Meta.setLore(List.of("Press F grants Buffs But comes with A downside"));
+        Meta.setUnbreakable(true);
+        Meta.setMaxStackSize(1);
+        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "Armor_key");
+        NamespacedKey Toughness_Key = new NamespacedKey(RoseGold.getInstance(), "Toughness_Key");
+        AttributeModifier Armor_Boost = new AttributeModifier(Armor_Key, 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
+        AttributeModifier Toughness_Boost = new AttributeModifier(Toughness_Key, 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
+        Meta.addAttributeModifier(Attribute.ARMOR, Armor_Boost);
+        Meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, Toughness_Boost);
+        GauntletsOfRage.setItemMeta(Meta);
+        return GauntletsOfRage;
     }
 
 
