@@ -35,7 +35,7 @@ public class Items {
         Meta.setMaxStackSize(1);
         Meta.setUnbreakable(true);
         Meta.setRarity(ItemRarity.EPIC);
-        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "Armor_key");
+        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "ThunderChestPlate_key");
         AttributeModifier Armor_Boost = new AttributeModifier(Armor_Key, 8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
         Meta.addAttributeModifier(Attribute.ARMOR, Armor_Boost);
         Meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, Armor_Boost);
@@ -64,7 +64,7 @@ public class Items {
         Meta.setMaxStackSize(1);
         NamespacedKey Speed_Key = new NamespacedKey(RoseGold.getInstance(), "Speed_key");
         NamespacedKey Fall_Key = new NamespacedKey(RoseGold.getInstance(), "Fall_key");
-        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "Armor_key");
+        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "AmethystBoots_key");
         AttributeModifier Armor_Boost = new AttributeModifier(Armor_Key, 4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.FEET);
         AttributeModifier Speed_Boost = new AttributeModifier(Speed_Key, 0.2, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlotGroup.FEET);
         AttributeModifier Fall_Damage = new AttributeModifier(Fall_Key, -0.3, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlotGroup.FEET);
@@ -83,7 +83,7 @@ public class Items {
         Meta.setLore(List.of("Press F grants Buffs But comes with A downside"));
         Meta.setUnbreakable(true);
         Meta.setMaxStackSize(1);
-        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "Armor_key");
+        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "GauntletsOfrage_key");
         NamespacedKey Toughness_Key = new NamespacedKey(RoseGold.getInstance(), "Toughness_Key");
         AttributeModifier Armor_Boost = new AttributeModifier(Armor_Key, 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
         AttributeModifier Toughness_Boost = new AttributeModifier(Toughness_Key, 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS);
