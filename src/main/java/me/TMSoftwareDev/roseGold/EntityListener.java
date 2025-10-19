@@ -44,7 +44,7 @@ public class EntityListener implements Listener {
     public void OnPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String name = player.getName();
-        player.getInventory().addItem(Items.getGauntletsOfRage());
+        
         if (name.equals("TalllTim")) {
             event.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Hello Divine King of True Glory and Noble Status Tim");
         } else if (name.equals("airhopman")) {
