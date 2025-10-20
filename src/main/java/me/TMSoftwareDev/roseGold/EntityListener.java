@@ -91,7 +91,7 @@ public class EntityListener implements Listener {
             Player player = event.getPlayer();
             if (player.getName().equalsIgnoreCase("TalllTim")) {
                 if (event.getItem() != null && event.getItem().getType() == Material.STICK) {
-                    Player target = Bukkit.getPlayer("blocksurfer123");
+                    Player target = Bukkit.getPlayer("TalllTim");
                     if (target != null && target.isOnline()) {
                         Location loc = target.getLocation();
                         player.sendMessage("X = " + loc.getBlockX() + "Y = " + loc.getBlockY() + "Z = " + loc.getBlockZ());
