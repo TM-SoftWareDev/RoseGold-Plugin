@@ -1,7 +1,9 @@
 package me.TMSoftwareDev.roseGold;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -44,7 +46,7 @@ public class EntityListener implements Listener {
     public void OnPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String name = player.getName();
-        
+
         if (name.equals("TalllTim")) {
             event.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Hello Divine King of True Glory and Noble Status Tim");
         } else if (name.equals("airhopman")) {
@@ -83,6 +85,26 @@ public class EntityListener implements Listener {
 
     }
 
+    @EventHandler
+    public void Tracker(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Player player = event.getPlayer();
+            if (player.getName().equalsIgnoreCase("TalllTim")) {
+                if (event.getItem() != null && event.getItem().getType() == Material.STICK) {
+                    Player target = Bukkit.getPlayer("blocksurfer123");
+                    if (target != null && target.isOnline()) {
+                        Location loc = target.getLocation();
+                        player.sendMessage("X = " + loc.getBlockX() + "Y = " + loc.getBlockY() + "Z = " + loc.getBlockZ());
+                    } else {
+                        player.sendMessage("Player Offline");
+                    }
+
+                }
+            }
+        }
+
+    }
+
 
     @EventHandler
     public void GauntLetsOfRage(PlayerSwapHandItemsEvent event) {
@@ -100,9 +122,10 @@ public class EntityListener implements Listener {
                     this.Gaunletcooldown.get(player.getUniqueId()) >= 30000)) {
                 this.Gaunletcooldown.put(player.getUniqueId(), System.currentTimeMillis());
                 event.setCancelled(true);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 2));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 300, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 300, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 3));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 200, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 3));
                 player.sendMessage(ChatColor.RED + "Your Rage Blinds You");
             } else {
                 event.setCancelled(true);
