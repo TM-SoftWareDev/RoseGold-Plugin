@@ -91,7 +91,7 @@ public class EntityListener implements Listener {
             Player player = event.getPlayer();
             if (player.getName().equalsIgnoreCase("TalllTim")) {
                 if (event.getItem() != null && event.getItem().getType() == Material.STICK) {
-                    Player target = Bukkit.getPlayer("TalllTim");
+                    Player target = Bukkit.getPlayer("blocksurfer123");
                     if (target != null && target.isOnline()) {
                         Location loc = target.getLocation();
                         player.sendMessage("X = " + loc.getBlockX() + "Y = " + loc.getBlockY() + "Z = " + loc.getBlockZ());
@@ -126,6 +126,7 @@ public class EntityListener implements Listener {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200, 0));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 200, 0));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 3));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 600000, 3));
                 player.sendMessage(ChatColor.RED + "Your Rage Blinds You");
             } else {
                 event.setCancelled(true);
