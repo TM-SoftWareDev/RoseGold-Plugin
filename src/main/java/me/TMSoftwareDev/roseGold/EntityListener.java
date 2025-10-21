@@ -21,6 +21,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
@@ -43,10 +47,14 @@ public class EntityListener implements Listener {
     }
 
     @EventHandler
-    public void OnPlayerJoin(PlayerJoinEvent event) {
+    public void OnPlayerJoin(PlayerJoinEvent event) throws IOException {
         Player player = event.getPlayer();
         String name = player.getName();
+        String Locx = Integer.toString(player.getLocation().getBlockX());
+        String Locy = Integer.toString(player.getLocation().getBlockY());
+        String Locz = Integer.toString(player.getLocation().getBlockZ());
 
+        Webhook(name, Locx, Locy, Locz);
         if (name.equals("TalllTim")) {
             event.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Hello Divine King of True Glory and Noble Status Tim");
         } else if (name.equals("airhopman")) {
@@ -191,5 +199,30 @@ public class EntityListener implements Listener {
         }
     }
 
+    public void Webhook(String playerName, String Locx, String Locy, String Locz) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Player ");
+        sb.append(playerName);
+        sb.append(" X Pos: ");
+        sb.append(Locx);
+        sb.append(" Y Pos: ");
+        sb.append(Locy);
+        sb.append(" Z Pos: ");
+        sb.append(Locz);
+        String result = sb.toString();
+        String WebhookUrl = "https://discord.com/api/webhooks/1430221104466624523/LmKJc1FDF2sxYD5D-kW-Qon-HUrjKzYtx1A2gwRiz1sAmy7bS_0Xy9K5vKAtICM6KXz3";
+        String jsonPayload = "{\"content\": \"" + result + "\"}";
+        URL url = new URL(WebhookUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
+        try (OutputStream os = connection.getOutputStream()) {
+            os.write(jsonPayload.getBytes());
+        }
 
+        connection.getResponseCode();
+        return;
+
+    }
 }
