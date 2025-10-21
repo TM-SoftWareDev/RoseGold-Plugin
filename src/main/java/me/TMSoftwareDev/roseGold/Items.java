@@ -27,6 +27,48 @@ public class Items {
         return roseGoldSword;
     }
 
+
+    public static ItemStack getVampireHelmet() {
+        ItemStack VampireHelmet = new ItemStack(Material.DIAMOND_HELMET, 1);
+        ItemMeta Meta = VampireHelmet.getItemMeta();
+        Meta.setDisplayName(ChatColor.RED + "Vampire helmet");
+        Meta.setLore(List.of("Life steal"));
+        Meta.setMaxStackSize(1);
+        Meta.setUnbreakable(true);
+        Meta.setRarity(ItemRarity.EPIC);
+        NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "VampireHelmet_key");
+        NamespacedKey Toughness_Key = new NamespacedKey(RoseGold.getInstance(), "VampireHelmetToughness_key");
+        AttributeModifier Armor_Boost = new AttributeModifier(Armor_Key, 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
+        AttributeModifier Toughness = new AttributeModifier(Toughness_Key, 3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
+        Meta.addAttributeModifier(Attribute.ARMOR, Armor_Boost);
+        Meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, Toughness);
+        VampireHelmet.setItemMeta(Meta);
+        return VampireHelmet;
+    }
+
+    public static ItemStack getHaloHelmet() {
+        ItemStack Halo = new ItemStack(Material.DIAMOND_HELMET, 1);
+        ItemMeta Meta = Halo.getItemMeta();
+        Meta.setDisplayName(ChatColor.YELLOW + "Halo");
+        Meta.setMaxStackSize(1);
+        Meta.setUnbreakable(true);
+        Meta.setRarity(ItemRarity.EPIC);
+        NamespacedKey HealthKey = new NamespacedKey(RoseGold.getInstance(), "HaloHealth_Key");
+        NamespacedKey ArmourKey = new NamespacedKey(RoseGold.getInstance(), "HaloArmour_Key");
+        NamespacedKey FallKey = new NamespacedKey(RoseGold.getInstance(), "HaloFall_Key");
+        NamespacedKey GravityKey = new NamespacedKey(RoseGold.getInstance(), "HaloGravity_Key");
+        AttributeModifier Health_Mod = new AttributeModifier(HealthKey, 4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
+        AttributeModifier Armour_Mod = new AttributeModifier(ArmourKey, 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD);
+        AttributeModifier Fall_Mod = new AttributeModifier(FallKey, -1, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlotGroup.HEAD);
+        AttributeModifier Gravity_Mod = new AttributeModifier(GravityKey, -0.35, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlotGroup.HEAD);
+        Meta.addAttributeModifier(Attribute.MAX_HEALTH, Health_Mod);
+        Meta.addAttributeModifier(Attribute.ARMOR, Armour_Mod);
+        Meta.addAttributeModifier(Attribute.FALL_DAMAGE_MULTIPLIER, Fall_Mod);
+        Meta.addAttributeModifier(Attribute.GRAVITY, Gravity_Mod);
+        Halo.setItemMeta(Meta);
+        return Halo;
+    }
+
     public static ItemStack getThunderChestPlate() {
         ItemStack ThunderChestPlate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
         ItemMeta Meta = ThunderChestPlate.getItemMeta();
@@ -36,9 +78,11 @@ public class Items {
         Meta.setUnbreakable(true);
         Meta.setRarity(ItemRarity.EPIC);
         NamespacedKey Armor_Key = new NamespacedKey(RoseGold.getInstance(), "ThunderChestPlate_key");
+        NamespacedKey Armor_Toughnesskey = new NamespacedKey(RoseGold.getInstance(), "ThunderChestPlateToughness_key");
         AttributeModifier Armor_Boost = new AttributeModifier(Armor_Key, 8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
+        AttributeModifier Armor_Toughness = new AttributeModifier(Armor_Toughnesskey, 4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.CHEST);
         Meta.addAttributeModifier(Attribute.ARMOR, Armor_Boost);
-        Meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, Armor_Boost);
+        Meta.addAttributeModifier(Attribute.ARMOR_TOUGHNESS, Armor_Toughness);
         ThunderChestPlate.setItemMeta(Meta);
         return ThunderChestPlate;
     }

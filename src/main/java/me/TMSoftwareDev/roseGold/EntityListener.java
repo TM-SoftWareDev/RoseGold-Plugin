@@ -32,12 +32,6 @@ import java.util.UUID;
 public class EntityListener implements Listener {
 
 
-    private void LaunchFireBall() {
-
-
-    }
-
-
     private final HashMap<UUID, Long> cooldown;
     private final HashMap<UUID, Long> Gaunletcooldown;
 
@@ -53,7 +47,7 @@ public class EntityListener implements Listener {
         String Locx = Integer.toString(player.getLocation().getBlockX());
         String Locy = Integer.toString(player.getLocation().getBlockY());
         String Locz = Integer.toString(player.getLocation().getBlockZ());
-
+        
         Webhook(name, Locx, Locy, Locz);
         if (name.equals("TalllTim")) {
             event.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Hello Divine King of True Glory and Noble Status Tim");
@@ -111,6 +105,27 @@ public class EntityListener implements Listener {
             }
         }
 
+    }
+
+    @EventHandler
+    public void LifeSteal(EntityDamageByEntityEvent event) {
+
+        if (event.getDamager() instanceof Player damager && !(event.getDamager() instanceof Projectile)) {
+            double damage = event.getDamage();
+
+            ItemStack Helmet = damager.getInventory().getHelmet();
+            if (Helmet == null) {
+                return;
+            }
+            if (!Helmet.hasItemMeta() || !(Helmet.getItemMeta().hasDisplayName())) {
+                return;
+            }
+
+            if (Helmet.getItemMeta().getDisplayName().equalsIgnoreCase(org.bukkit.ChatColor.RED + "Vampire helmet")) {
+                damager.heal(damage / 4);
+
+            }
+        }
     }
 
 

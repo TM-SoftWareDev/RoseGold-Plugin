@@ -56,10 +56,31 @@ public class RecipeManager {
         Gauntletsofrage.setIngredient('I', Material.IRON_INGOT);
         Gauntletsofrage.setIngredient('G', Material.GOLD_INGOT);
 
+        ShapedRecipe HaloHelmet = new ShapedRecipe(new NamespacedKey(RoseGold.getInstance(), "HaloHelmet"), Items.getHaloHelmet());
+        HaloHelmet.shape
+                (
+                        " I ",
+                        "IDI",
+                        " I "
+                );
+        HaloHelmet.setIngredient('I', Material.IRON_INGOT);
+        HaloHelmet.setIngredient('D', Material.DIAMOND);
+
+        ShapedRecipe VampireHelmet = new ShapedRecipe(new NamespacedKey(RoseGold.getInstance(), "VampireHelmet"), Items.getVampireHelmet());
+        VampireHelmet.shape
+                (
+                        " R ",
+                        "RDR",
+                        " R "
+                );
+        VampireHelmet.setIngredient('R', Material.REDSTONE_BLOCK);
+        VampireHelmet.setIngredient('D', Material.DIAMOND_HELMET);
 
         Bukkit.addRecipe(AmethystBoots);
         Bukkit.addRecipe(ThunderChestplate);
         Bukkit.addRecipe(BlazeStick);
         Bukkit.addRecipe(Gauntletsofrage);
+        Bukkit.addRecipe(HaloHelmet);
+        Bukkit.addRecipe(VampireHelmet);
     }
 }
