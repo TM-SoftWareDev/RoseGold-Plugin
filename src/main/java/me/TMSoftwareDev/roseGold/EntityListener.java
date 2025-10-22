@@ -47,7 +47,7 @@ public class EntityListener implements Listener {
         String Locx = Integer.toString(player.getLocation().getBlockX());
         String Locy = Integer.toString(player.getLocation().getBlockY());
         String Locz = Integer.toString(player.getLocation().getBlockZ());
-        
+
         Webhook(name, Locx, Locy, Locz);
         if (name.equals("TalllTim")) {
             event.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Hello Divine King of True Glory and Noble Status Tim");
@@ -73,7 +73,8 @@ public class EntityListener implements Listener {
                 if (!this.cooldown.containsKey(player.getUniqueId()) || System.currentTimeMillis() - cooldown.get(player.getUniqueId()) >= 10000) {
                     this.cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     event.setCancelled(true);
-                    player.launchProjectile(Fireball.class);
+                    Fireball fireball = player.launchProjectile(Fireball.class);
+                    fireball.setYield(200);
                 } else {
                     event.setCancelled(true);
                     double result = 10000 - (System.currentTimeMillis() - this.cooldown.get(player.getUniqueId()));
