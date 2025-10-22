@@ -76,11 +76,21 @@ public class RecipeManager {
         VampireHelmet.setIngredient('R', Material.REDSTONE_BLOCK);
         VampireHelmet.setIngredient('D', Material.DIAMOND_HELMET);
 
+        ShapedRecipe BloodSword = new ShapedRecipe(new NamespacedKey(RoseGold.getInstance(), "BloodSword"), Items.getBloodSword());
+        BloodSword.shape(
+                " R ",
+                " R ",
+                " S "
+        );
+        BloodSword.setIngredient('R', Material.REDSTONE_BLOCK);
+        BloodSword.setIngredient('S', Material.STICK);
+
         Bukkit.addRecipe(AmethystBoots);
         Bukkit.addRecipe(ThunderChestplate);
         Bukkit.addRecipe(BlazeStick);
         Bukkit.addRecipe(Gauntletsofrage);
         Bukkit.addRecipe(HaloHelmet);
         Bukkit.addRecipe(VampireHelmet);
+        Bukkit.addRecipe(BloodSword);
     }
 }

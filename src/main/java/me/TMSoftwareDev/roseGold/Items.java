@@ -46,6 +46,17 @@ public class Items {
         return VampireHelmet;
     }
 
+    public static ItemStack getBloodSword() {
+        ItemStack BloodSword = new ItemStack(Material.COPPER_SWORD, 1);
+        ItemMeta Meta = BloodSword.getItemMeta();
+        Meta.setDisplayName(ChatColor.RED + "Blood Sword");
+        Meta.setUnbreakable(true);
+        BloodSword.setItemMeta(Meta);
+        return BloodSword;
+
+    }
+
+
     public static ItemStack getHaloHelmet() {
         ItemStack Halo = new ItemStack(Material.DIAMOND_HELMET, 1);
         ItemMeta Meta = Halo.getItemMeta();

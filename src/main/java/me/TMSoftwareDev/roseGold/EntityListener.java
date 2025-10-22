@@ -88,6 +88,29 @@ public class EntityListener implements Listener {
 
     }
 
+
+    @EventHandler
+    public void BloodSword(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player damager && !(event.getDamager() instanceof Projectile)) {
+            ItemStack Sword = damager.getInventory().getItemInMainHand();
+            if (Sword == null || Sword.getType() == Material.AIR) {
+                return;
+            }
+            if (!Sword.getItemMeta().hasDisplayName()) {
+                return;
+            }
+            if (Sword.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "Blood Sword")) {
+                double Damage = event.getDamage();
+                double MaxHealth = damager.getMaxHealth();
+                double CurrentHealth = damager.getHealth();
+                double HealthPercent = CurrentHealth / MaxHealth;
+                double Multiplier = 1 + (1 - HealthPercent);
+                event.setDamage(Damage * Multiplier);
+            }
+        }
+
+    }
+
     @EventHandler
     public void Tracker(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
