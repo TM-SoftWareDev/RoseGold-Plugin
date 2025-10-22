@@ -1,9 +1,8 @@
 package me.TMSoftwareDev.roseGold;
 
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -106,6 +105,13 @@ public class EntityListener implements Listener {
                 double HealthPercent = CurrentHealth / MaxHealth;
                 double Multiplier = 1 + (1 - HealthPercent);
                 event.setDamage(Damage * Multiplier);
+                Entity entity = event.getEntity();
+                Location location = entity.getLocation();
+                int particleAmount = (int) Math.round(Damage * Multiplier * 4);
+                particleAmount = Math.max(5, Math.min(particleAmount, 150));
+                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.RED, 0.5f);
+                entity.getWorld().spawnParticle(Particle.DUST, location.add(0, 1, 0), particleAmount, 0.4, 0.5, 0.4, dustOptions);
+                damager.sendActionBar(Component.text("Damge Boost%: " + (int) Math.round((Multiplier - 1) * 100)));
             }
         }
 
