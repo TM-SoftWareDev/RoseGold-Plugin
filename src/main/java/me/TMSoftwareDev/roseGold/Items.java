@@ -55,6 +55,16 @@ public class Items {
         return XrayPotion;
     }
 
+    public static ItemStack getNuke() {
+        ItemStack Nuke = new ItemStack(Material.TNT, 1);
+        ItemMeta Meta = Nuke.getItemMeta();
+        Meta.setMaxStackSize(1);
+        Meta.setDisplayName(ChatColor.RED + "NUKE");
+        Nuke.setItemMeta(Meta);
+        return Nuke;
+
+    }
+
 
     public static ItemStack getBloodSword() {
         ItemStack BloodSword = new ItemStack(Material.COPPER_SWORD, 1);

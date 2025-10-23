@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.TNTPrimeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,6 +22,7 @@ import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -88,6 +91,39 @@ public class EntityListener implements Listener {
             }
 
 
+        }
+
+    }
+
+    @EventHandler
+    public void BlockPlace(BlockPlaceEvent event) {
+        Block block = event.getBlock();
+        Player player = event.getPlayer();
+
+        ItemStack item = event.getItemInHand();
+        if (item == null) return;
+        if (block.getType() == Material.TNT &&
+                item.hasItemMeta() &&
+                item.getItemMeta().hasDisplayName() &&
+                item.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.RED + "NUKE")) {
+
+
+            block.setMetadata("NUKE", new FixedMetadataValue(RoseGold.getInstance(), true));
+        }
+
+    }
+
+    @EventHandler
+    public void OntntIgnite(TNTPrimeEvent event) {
+        Block block = event.getBlock();
+        if (block == null) return;
+        if (block.hasMetadata("NUKE")) {
+            event.setCancelled(true);
+            TNTPrimed tnt = block.getWorld().spawn(block.getLocation().add(0.5, 0, 0.5), TNTPrimed.class);
+            tnt.setFuseTicks(200);
+            tnt.setYield(100F);
+
+            block.setType(Material.AIR);
         }
 
     }

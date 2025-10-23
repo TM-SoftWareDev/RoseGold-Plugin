@@ -85,7 +85,16 @@ public class RecipeManager {
         BloodSword.setIngredient('R', Material.REDSTONE_BLOCK);
         BloodSword.setIngredient('S', Material.STICK);
 
-        
+        ShapedRecipe Nuke = new ShapedRecipe(new NamespacedKey(RoseGold.getInstance(), "Nuke"), Items.getNuke());
+        Nuke.shape
+                (
+                        "TTT",
+                        "TTT",
+                        "TTT"
+                );
+        Nuke.setIngredient('T', Material.TNT);
+
+
         Bukkit.addRecipe(AmethystBoots);
         Bukkit.addRecipe(ThunderChestplate);
         Bukkit.addRecipe(BlazeStick);
@@ -93,5 +102,6 @@ public class RecipeManager {
         Bukkit.addRecipe(HaloHelmet);
         Bukkit.addRecipe(VampireHelmet);
         Bukkit.addRecipe(BloodSword);
+        Bukkit.addRecipe(Nuke);
     }
 }
