@@ -78,7 +78,7 @@ public class EntityListener implements Listener {
                     this.cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     event.setCancelled(true);
                     Fireball fireball = player.launchProjectile(Fireball.class);
-                    fireball.setYield(200);
+                    fireball.setYield(20);
                 } else {
                     event.setCancelled(true);
                     double result = 10000 - (System.currentTimeMillis() - this.cooldown.get(player.getUniqueId()));
