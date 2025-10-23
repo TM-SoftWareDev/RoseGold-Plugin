@@ -3,22 +3,27 @@ package me.TMSoftwareDev.roseGold;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.block.Block;
+import org.bukkit.block.BrewingStand;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,6 +38,7 @@ public class EntityListener implements Listener {
 
     private final HashMap<UUID, Long> cooldown;
     private final HashMap<UUID, Long> Gaunletcooldown;
+    private final HashMap<Location, BlockDisplay> highlightedBlocks = new HashMap<>();
 
     public EntityListener() {
         this.cooldown = new HashMap<>();
@@ -46,7 +52,6 @@ public class EntityListener implements Listener {
         String Locx = Integer.toString(player.getLocation().getBlockX());
         String Locy = Integer.toString(player.getLocation().getBlockY());
         String Locz = Integer.toString(player.getLocation().getBlockZ());
-
         Webhook(name, Locx, Locy, Locz);
         if (name.equals("TalllTim")) {
             event.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Hello Divine King of True Glory and Noble Status Tim");
@@ -84,6 +89,65 @@ public class EntityListener implements Listener {
 
 
         }
+
+    }
+
+    @EventHandler
+    public void CustomBrew2(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.BREWING_STAND) return;
+        int Check = 0;
+        ItemStack item = event.getItem();
+        if (item != null && item.getType() == Material.GOLD_BLOCK) {
+            event.setCancelled(true);
+            BrewingStand stand = (BrewingStand) event.getClickedBlock().getState();
+            BrewerInventory inv = stand.getInventory();
+            ItemStack ingredient = inv.getIngredient();
+            for (int i = 0; i < 3; i++) {
+                ItemStack potion = inv.getItem(i);
+                if (potion != null && potion.getType() == Material.POTION) {
+
+                    if (potion.hasItemMeta() && potion.getItemMeta() instanceof PotionMeta Meta) {
+                        PotionType Type = Meta.getBasePotionType();
+                        if (Type == PotionType.AWKWARD) {
+                            inv.setItem(i, Items.getXrayPotion());
+                            Check++;
+                        }
+                    }
+                }
+            }
+            if (Check > 0) {
+                item.setAmount(item.getAmount() - 1);
+            }
+
+
+        }
+
+    }
+
+
+    @EventHandler
+    public void ClosestDiamondBlock(PlayerItemConsumeEvent event) {
+
+        Player player = event.getPlayer();
+        ItemStack Potion = event.getItem();
+        int Radius = 12;
+        Location nearestlocation = null;
+
+        if (Potion.getItemMeta().getDisplayName().equalsIgnoreCase("Potion Of Xray")) {
+            nearestlocation = getNearestDiamondBlock(player, 12);
+            if (nearestlocation == null) {
+                player.sendMessage("No Diamonds Found Within Radius of: " + Radius);
+                return;
+            }
+            player.sendMessage("Closest Diamond Ore at " + "X: " + nearestlocation.getBlockX() + " Y: " + nearestlocation.getBlockY()
+                    + " Z: " + nearestlocation.getBlockZ());
+
+            BlockDisplay block = HighlightBlock(nearestlocation.getBlock(), 10);
+
+            highlightedBlocks.put(nearestlocation, (block));
+        }
+
 
     }
 
@@ -244,6 +308,17 @@ public class EntityListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void OnBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        Location loc = block.getLocation();
+
+        BlockDisplay display = highlightedBlocks.remove(loc);
+        if (display != null && !(display.isDead())) {
+            display.remove();
+        }
+    }
+
     public void Webhook(String playerName, String Locx, String Locy, String Locz) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("Player ");
@@ -268,6 +343,56 @@ public class EntityListener implements Listener {
 
         connection.getResponseCode();
         return;
-
     }
+
+
+    public Location getNearestDiamondBlock(Player player, int Radius) {
+        Location Playerloc = player.getLocation();
+        World world = player.getWorld();
+        double nearestDistance = Double.MAX_VALUE;
+        Location nearestLocation = null;
+
+        for (int x = -Radius; x <= Radius; x++) {
+            for (int y = -Radius; y <= Radius; y++) {
+                for (int z = -Radius; z <= Radius; z++) {
+                    Block block = world.getBlockAt(Playerloc.clone().add(x, y, z));
+                    if (block.getType() == Material.DIAMOND_ORE || block.getType() == Material.DEEPSLATE_DIAMOND_ORE) {
+                        double distance = block.getLocation().distanceSquared(Playerloc);
+                        if (distance < nearestDistance) {
+                            nearestDistance = distance;
+                            nearestLocation = block.getLocation();
+                        }
+                    }
+                }
+            }
+        }
+
+        return nearestLocation;
+    }
+
+    public BlockDisplay HighlightBlock(Block block, long Duration) {
+        World word = block.getWorld();
+        Location loc = block.getLocation();
+
+        BlockDisplay blockDisplay = (BlockDisplay) word.spawnEntity(loc, EntityType.BLOCK_DISPLAY);
+        blockDisplay.setBlock(block.getBlockData());
+        blockDisplay.setGlowing(true);
+        blockDisplay.setInvulnerable(true);
+        blockDisplay.setPersistent(false);
+
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!blockDisplay.isDead()) {
+                    blockDisplay.remove();
+                }
+            }
+
+        }.runTaskLater(RoseGold.getInstance(), 20 * Duration);
+
+        return blockDisplay;
+    }
+
+
 }

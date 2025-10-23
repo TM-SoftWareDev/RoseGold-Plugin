@@ -46,6 +46,16 @@ public class Items {
         return VampireHelmet;
     }
 
+    public static ItemStack getXrayPotion() {
+        ItemStack XrayPotion = new ItemStack(Material.POTION, 1);
+        ItemMeta Meta = XrayPotion.getItemMeta();
+        Meta.setMaxStackSize(1);
+        Meta.setDisplayName("Potion Of Xray");
+        XrayPotion.setItemMeta(Meta);
+        return XrayPotion;
+    }
+
+
     public static ItemStack getBloodSword() {
         ItemStack BloodSword = new ItemStack(Material.COPPER_SWORD, 1);
         ItemMeta Meta = BloodSword.getItemMeta();

@@ -85,6 +85,7 @@ public class RecipeManager {
         BloodSword.setIngredient('R', Material.REDSTONE_BLOCK);
         BloodSword.setIngredient('S', Material.STICK);
 
+        
         Bukkit.addRecipe(AmethystBoots);
         Bukkit.addRecipe(ThunderChestplate);
         Bukkit.addRecipe(BlazeStick);
