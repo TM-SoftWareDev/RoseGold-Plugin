@@ -168,7 +168,7 @@ public class EntityListener implements Listener {
                     if (Bukkit.getTPS()[0] < 18.0) {
                         blockspertick = 60;
                     }
-                    
+
 
                     for (int i = 0; i < blockspertick && Index < blocksToDestroy.size(); i++, Index++) {
                         Block block = blocksToDestroy.get(Index);
@@ -335,11 +335,9 @@ public class EntityListener implements Listener {
                     this.Gaunletcooldown.get(player.getUniqueId()) >= 30000)) {
                 this.Gaunletcooldown.put(player.getUniqueId(), System.currentTimeMillis());
                 event.setCancelled(true);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 400, 3));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 200, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 600, 3));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 600000, 3));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 300, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 1));
+                ;
                 player.sendMessage(ChatColor.RED + "Your Rage Blinds You");
             } else {
                 event.setCancelled(true);
