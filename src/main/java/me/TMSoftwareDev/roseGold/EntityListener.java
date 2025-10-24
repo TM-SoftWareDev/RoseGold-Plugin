@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.TNTPrimeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -32,9 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class EntityListener implements Listener {
 
@@ -121,17 +120,78 @@ public class EntityListener implements Listener {
             event.setCancelled(true);
             TNTPrimed tnt = block.getWorld().spawn(block.getLocation().add(0.5, 0, 0.5), TNTPrimed.class);
             tnt.setFuseTicks(200);
-            tnt.setYield(100F);
 
             block.setType(Material.AIR);
         }
+    }
 
+    @EventHandler
+    public void OntntExplode(EntityExplodeEvent event) {
+        Entity entity = event.getEntity();
+        Block Tblock = event.getLocation().getBlock();
+        if (Tblock.hasMetadata("NUKE")) {
+
+
+            if (!(entity instanceof TNTPrimed)) return;
+            event.blockList().clear();
+
+            World world = entity.getWorld();
+            int radius = 25;
+            int centerX = entity.getLocation().getBlockX();
+            int centerY = entity.getLocation().getBlockY();
+            int centerZ = entity.getLocation().getBlockZ();
+
+
+            List<Block> blocksToDestroy = new ArrayList<>();
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        if (x * x + y * y + z * z <= radius * radius) {
+                            Block block = world.getBlockAt(centerX + x, centerY + y, centerZ + z);
+                            if (block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
+                                blocksToDestroy.add(block);
+                            }
+                        }
+                    }
+                }
+            }
+
+            new BukkitRunnable() {
+                int Index = 0;
+                int blockspertick = 100;
+
+
+                @Override
+                public void run() {
+
+                    if (Bukkit.getTPS()[0] < 18.0) {
+                        blockspertick = 60;
+                    }
+                    
+
+                    for (int i = 0; i < blockspertick && Index < blocksToDestroy.size(); i++, Index++) {
+                        Block block = blocksToDestroy.get(Index);
+                        block.setType(Material.AIR);
+                    }
+
+                    if (Index >= blocksToDestroy.size()) {
+                        cancel();
+                    }
+
+                }
+
+            }.runTaskTimer(RoseGold.getInstance(), 0, 1);
+
+
+        }
     }
 
     @EventHandler
     public void CustomBrew2(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.BREWING_STAND) return;
+        if (event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.BREWING_STAND)
+            return;
         int Check = 0;
         ItemStack item = event.getItem();
         if (item != null && item.getType() == Material.GOLD_BLOCK) {
