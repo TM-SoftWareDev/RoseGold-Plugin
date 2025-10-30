@@ -15,7 +15,7 @@ public final class RoseGold extends JavaPlugin implements Listener {
         instance = this;
 
         System.out.println("@ RoseGold Enabled");
-        getServer().getPluginManager().registerEvents(new EntityListener(), this);
+
 
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this, "RoseGoldSword"), Items.getRoseGoldSword());
         recipe.shape(
@@ -28,7 +28,12 @@ public final class RoseGold extends JavaPlugin implements Listener {
 
         Bukkit.addRecipe(recipe);
         RecipeManager.registerRecipes();
-        getCommand("Reset").setExecutor(new Commands());
+        Commands commands = new Commands();
+        getCommand("Reset").setExecutor(commands);
+        getCommand("DragonEvent").setExecutor(commands);
+        EntityListener listener = new EntityListener(commands);
+        getServer().getPluginManager().registerEvents(listener, this);
+
 
     }
 

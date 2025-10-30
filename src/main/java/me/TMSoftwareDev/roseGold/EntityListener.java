@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.TNTPrimeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -38,14 +39,16 @@ import java.util.*;
 public class EntityListener implements Listener {
 
 
-    private final HashMap<UUID, Long> cooldown;
-    private final HashMap<UUID, Long> Gaunletcooldown;
+    private final HashMap<UUID, Long> cooldown = new HashMap<>();
+    private final HashMap<UUID, Long> Gaunletcooldown = new HashMap<>();
     private final HashMap<Location, BlockDisplay> highlightedBlocks = new HashMap<>();
+    private final HashMap<UUID, Double> DragonDamage = new HashMap<>();
+    private final Commands commands;
 
-    public EntityListener() {
-        this.cooldown = new HashMap<>();
-        this.Gaunletcooldown = new HashMap<>();
+    public EntityListener(Commands commands) {
+        this.commands = commands;
     }
+
 
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent event) throws IOException {
@@ -113,6 +116,38 @@ public class EntityListener implements Listener {
     }
 
     @EventHandler
+    public void OndragonDamage(EntityDamageByEntityEvent event) {
+        EnderDragon DragonEntity = commands.getActiveDragon();
+        if (DragonEntity == null || event.getEntity() != DragonEntity) return;
+        if (!(event.getDamager() instanceof Player player)) return;
+        double damage = event.getFinalDamage();
+        double currentDamage = DragonDamage.getOrDefault(player.getUniqueId(), 0.0);
+        DragonDamage.put(player.getUniqueId(), currentDamage + damage);
+    }
+
+    @EventHandler
+    public void OnDragonDeath(EntityDeathEvent event) {
+        EnderDragon DragonEntity = commands.getActiveDragon();
+        boolean DragonEvent = commands.getDragonBool();
+        if (DragonEvent && event.getEntity() == DragonEntity) {
+            for (Map.Entry<UUID, Double> entry : DragonDamage.entrySet()) {
+                double maxDamage = 0;
+                UUID topPlayer = null;
+                if (entry.getValue() > maxDamage) {
+                    maxDamage = entry.getValue();
+                    topPlayer = entry.getKey();
+                }
+                if (topPlayer == null) return;
+                Player player = Bukkit.getPlayer(topPlayer);
+                Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "The Winner Was " + player.getName() + " With " + maxDamage + " Damage");
+                ItemStack EGG = new ItemStack(Material.DRAGON_EGG, 1);
+                player.getInventory().addItem(EGG);
+            }
+        }
+    }
+
+
+    @EventHandler
     public void OntntIgnite(TNTPrimeEvent event) {
         Block block = event.getBlock();
         if (block == null) return;
@@ -125,6 +160,7 @@ public class EntityListener implements Listener {
         }
     }
 
+
     @EventHandler
     public void OntntExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
@@ -136,7 +172,7 @@ public class EntityListener implements Listener {
             event.blockList().clear();
 
             World world = entity.getWorld();
-            int radius = 25;
+            int radius = 40;
             int centerX = entity.getLocation().getBlockX();
             int centerY = entity.getLocation().getBlockY();
             int centerZ = entity.getLocation().getBlockZ();
@@ -159,14 +195,14 @@ public class EntityListener implements Listener {
 
             new BukkitRunnable() {
                 int Index = 0;
-                int blockspertick = 100;
+                int blockspertick = 250;
 
 
                 @Override
                 public void run() {
 
                     if (Bukkit.getTPS()[0] < 18.0) {
-                        blockspertick = 60;
+                        blockspertick = 120;
                     }
 
 
@@ -296,6 +332,28 @@ public class EntityListener implements Listener {
         }
 
     }
+
+//    @EventHandler
+//    public void OrbitalCannon(PlayerInteractEvent event) {
+//        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+//            Player player = event.getPlayer();
+//            Location loc = player.getLocation();
+//            int radius = 5;
+//            for (int x = -radius; x < radius; x++) {
+//                for (int z = -radius; z < radius; z++) {
+//
+//                    if (x * x + z * z <= radius * radius) {
+//                        Location particleLoc = loc.clone().add(x, 0, z);
+//                        player.getWorld().spawnParticle(Particle.BUBBLE, particleLoc, 100);
+//                    }
+//                }
+//            }
+//
+//
+//        }
+//
+//
+//    }
 
     @EventHandler
     public void LifeSteal(EntityDamageByEntityEvent event) {

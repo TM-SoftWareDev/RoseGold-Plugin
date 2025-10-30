@@ -6,3 +6,6 @@ commands:
   Reset:
     description: An Easy Way To Kill Yourself
     usage: /<command>
+  DragonEvent:
+    description: Spawn End Event
+    usage: /<command>
