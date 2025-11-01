@@ -31,9 +31,6 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.*;
 
 public class EntityListener implements Listener {
@@ -57,7 +54,6 @@ public class EntityListener implements Listener {
         String Locx = Integer.toString(player.getLocation().getBlockX());
         String Locy = Integer.toString(player.getLocation().getBlockY());
         String Locz = Integer.toString(player.getLocation().getBlockZ());
-        Webhook(name, Locx, Locy, Locz);
         if (name.equals("TalllTim")) {
             event.setJoinMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "Hello Divine King of True Glory and Noble Status Tim");
         } else if (name.equals("airhopman")) {
@@ -313,25 +309,6 @@ public class EntityListener implements Listener {
 
     }
 
-    @EventHandler
-    public void Tracker(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Player player = event.getPlayer();
-            if (player.getName().equalsIgnoreCase("TalllTim")) {
-                if (event.getItem() != null && event.getItem().getType() == Material.STICK) {
-                    Player target = Bukkit.getPlayer("blocksurfer123");
-                    if (target != null && target.isOnline()) {
-                        Location loc = target.getLocation();
-                        player.sendMessage("X = " + loc.getBlockX() + "Y = " + loc.getBlockY() + "Z = " + loc.getBlockZ());
-                    } else {
-                        player.sendMessage("Player Offline");
-                    }
-
-                }
-            }
-        }
-
-    }
 
 //    @EventHandler
 //    public void OrbitalCannon(PlayerInteractEvent event) {
@@ -469,32 +446,6 @@ public class EntityListener implements Listener {
         if (display != null && !(display.isDead())) {
             display.remove();
         }
-    }
-
-    public void Webhook(String playerName, String Locx, String Locy, String Locz) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Player ");
-        sb.append(playerName);
-        sb.append(" X Pos: ");
-        sb.append(Locx);
-        sb.append(" Y Pos: ");
-        sb.append(Locy);
-        sb.append(" Z Pos: ");
-        sb.append(Locz);
-        String result = sb.toString();
-        String WebhookUrl = "https://discord.com/api/webhooks/1430221104466624523/LmKJc1FDF2sxYD5D-kW-Qon-HUrjKzYtx1A2gwRiz1sAmy7bS_0Xy9K5vKAtICM6KXz3";
-        String jsonPayload = "{\"content\": \"" + result + "\"}";
-        URL url = new URL(WebhookUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setDoOutput(true);
-        try (OutputStream os = connection.getOutputStream()) {
-            os.write(jsonPayload.getBytes());
-        }
-
-        connection.getResponseCode();
-        return;
     }
 
 
